@@ -211,12 +211,20 @@ INSERT INTO Togrute VALUES (1, "SJ", "NordlandsBanen");
 INSERT INTO StasjonPaaRute VALUES ("Trondheim", 1, NULL, "07:49");
 INSERT INTO StasjonPaaRute VALUES ("Steinkjer", 1, "09:51", "09:51");
 INSERT INTO StasjonPaaRute VALUES ("Mosjøen", 1, "13:20", "13:20");
+INSERT INTO StasjonPaaRute VALUES ("Mo i Rana", 1, "14:31", "14:31");
+INSERT INTO StasjonPaaRute VALUES ("Fauske", 1, "16:49", "16:49");
+INSERT INTO StasjonPaaRute VALUES ("Bodo", 1, "17:34", "17:34");
 INSERT INTO Vogn VALUES (1, "SJ");
 INSERT INTO Vogn VALUES (2, "SJ");
 INSERT INTO Sittevogn VALUES (1, 3, 4);
 INSERT INTO Sittevogn VALUES (2, 3, 4);
 INSERT INTO oppsettPaaRute VALUES (1, 1, 1);
 INSERT INTO oppsettPaaRute VALUES (1, 2, 2);
+INSERT INTO DelstrekningPaaRute VALUES ("Trondheim", "Steinkjer", 1);
+INSERT INTO DelstrekningPaaRute Values ("Steinkjer", "Mosjøen", 1);
+INSERT INTO DelstrekningPaaRute Values ("Mosjøen", "Mo i Rana", 1);
+INSERT INTO DelstrekningPaaRute Values ("Mo i Rana", "Fauske", 1);
+INSERT INTO DelstrekningPaaRute Values ("Fauske", "Bodo", 1);
 
 -- Togrute
 INSERT INTO Togrute VALUES (2, "SJ", "NordlandsBanen");
