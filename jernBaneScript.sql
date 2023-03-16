@@ -258,3 +258,18 @@ INSERT INTO oppsettPaaRute VALUES (3, 5, 1);
 INSERT INTO DelstrekningPaaRute VALUES ("Mo i Rana", "Mosjøen", 3);
 INSERT INTO DelstrekningPaaRute VALUES ("Mosjøen", "Steinkjer", 3);
 INSERT INTO DelstrekningPaaRute VALUES ("Steinkjer", "Trondheim", 3);
+
+-- TogruteForekomst
+INSERT INTO TogRuteForekomst VALUES (1, "2016-01-01");
+INSERT INTO TogruteForekomst VALUES (1, "2016-01-02");
+INSERT INTO TogruteForekomst VALUES (1, "2016-01-03");
+INSERT INTO TogRuteForekomst VALUES (2, "2016-01-01");
+INSERT INTO TogRuteForekomst VALUES (2, "2016-01-02");
+INSERT INTO TogRuteForekomst VALUES (2, "2016-01-03");
+INSERT INTO TogRuteForekomst VALUES (3, "2016-01-01");	
+INSERT INTO TogRuteForekomst VALUES (3, "2016-01-02");
+INSERT INTO TogRuteForekomst VALUES (3, "2016-01-03");
+INSERT INTO TogRuteForekomst VALUES (3, "2016-01-04");
+INSERT INTO TogRuteForekomst VALUES (3, "2016-01-05");
+INSERT INTO TogRuteForekomst VALUES (3, "2016-01-06");
+INSERT INTO TogRuteForekomst VALUES (3, "2016-01-07");
