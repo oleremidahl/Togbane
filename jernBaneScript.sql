@@ -1,5 +1,22 @@
 -- oppretter tabeller
 
+DROP TABLE IF EXISTS ForekomstDato;
+DROP TABLE IF EXISTS TogRuteForekomst;
+DROP TABLE IF EXISTS Billett;
+DROP TABLE IF EXISTS Kundeordre;
+DROP TABLE IF EXISTS Kunde;
+DROP TABLE IF EXISTS Sovevogn;
+DROP TABLE IF EXISTS Sittevogn;
+DROP TABLE IF EXISTS Vogn;
+DROP TABLE IF EXISTS oppsettPaaRute;
+DROP TABLE IF EXISTS Operator;
+DROP TABLE IF EXISTS DelstrekningPaaRute;
+DROP TABLE IF EXISTS StasjonPaaRute;
+DROP TABLE IF EXISTS Delstrekning;
+DROP TABLE IF EXISTS BaneStrekning;
+DROP TABLE IF EXISTS Togrute;
+DROP TABLE IF EXISTS JernbaneStasjon;
+
 CREATE TABLE JernbaneStasjon (
 navn VARCHAR(50) PRIMARY KEY,
 moh INT NOT NULL
@@ -273,7 +290,7 @@ INSERT INTO TogRuteForekomst VALUES (3, "2016-01-01");
 INSERT INTO TogRuteForekomst VALUES (3, "2016-01-02");
 INSERT INTO TogRuteForekomst VALUES (3, "2016-01-03");
 INSERT INTO TogRuteForekomst VALUES (3, "2016-01-04");
-INSERT INTO ForekomstDatot VALUES ("2016-01-04", "Mandag");
+INSERT INTO ForekomstDato VALUES ("2016-01-04", "Mandag");
 INSERT INTO TogRuteForekomst VALUES (3, "2016-01-05");
 INSERT INTO ForekomstDato VALUES ("2016-01-05", "Tirsdag");
 INSERT INTO TogRuteForekomst VALUES (3, "2016-01-06");
