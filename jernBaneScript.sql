@@ -150,54 +150,55 @@ tlf INT
 );
 
 CREATE TABLE Kundeordre (
-ordreNr INT PRIMARY KEY,
-dato DATE,
-tid TIME,
-kundeNr INT NOT NULL,
-FOREIGN KEY (kundeNr) REFERENCES Kunde(kundeNr)
-	ON UPDATE CASCADE
-	ON DELETE NO ACTION
+	ordreNr INT NOT NULL,
+	dato DATE,
+	tid TIME,
+	kundeNr INT NOT NULL,
+	CONSTRAINT ordre_pk PRIMARY KEY (ordreNr),
+	CONSTRAINT kunde_fk FOREIGN KEY (kundeNr) REFERENCES Kunde(kundeNr)
+		ON UPDATE CASCADE
+		ON DELETE NO ACTION
 );
 
 CREATE TABLE Billett (
-ordreNr INT NOT NULL,
-dato DATE NOT NULL,
-ruteNr INT NOT NULL,
-serieNr INT NOT NULL,
-plassNr INT,
-startStasjon VARCHAR(50),
-endeStasjon VARCHAR(50),
-PRIMARY KEY (ordreNr, dato, ruteNr, serieNr, plassNr),
-FOREIGN KEY (ordreNr) REFERENCES Kundeordre
-	ON UPDATE CASCADE
-	ON DELETE NO ACTION,
-FOREIGN KEY (dato, ruteNr) REFERENCES TogRuteForekomst(dato, ruteNR)
-	ON UPDATE CASCADE
-	ON DELETE NO ACTION,
-FOREIGN KEY (serieNr) REFERENCES Vogn(serieNr)
-	ON UPDATE CASCADE
-	ON DELETE NO ACTION,
-FOREIGN KEY (startStasjon, endeStasjon) REFERENCES JernbaneStasjon(startStasjon, endeStasjon)
-	ON UPDATE CASCADE
-	ON DELETE NO ACTION
+	ordreNr INT NOT NULL,
+	dato DATE NOT NULL,
+	ruteNr INT NOT NULL,
+	serieNr INT NOT NULL,
+	plassNr INT,
+	startStasjon VARCHAR(50),
+	endeStasjon VARCHAR(50),
+	CONSTRAINT billett_pk PRIMARY KEY (ordreNr, dato, ruteNr, serieNr, plassNr),
+	CONSTRAINT ordre_fk FOREIGN KEY (ordreNr) REFERENCES Kundeordre
+		ON UPDATE CASCADE
+		ON DELETE NO ACTION,
+	CONSTRAINT forekomst_fk FOREIGN KEY (dato, ruteNr) REFERENCES TogRuteForekomst(dato, ruteNR)
+		ON UPDATE CASCADE
+		ON DELETE NO ACTION,
+	CONSTRAINT vogn_fk FOREIGN KEY (serieNr) REFERENCES Vogn(serieNr)
+		ON UPDATE CASCADE
+		ON DELETE NO ACTION,
+	CONSTRAINT stasjon_fk FOREIGN KEY (startStasjon, endeStasjon) REFERENCES JernbaneStasjon(startStasjon, endeStasjon)
+		ON UPDATE CASCADE
+		ON DELETE NO ACTION
 );
 
 CREATE TABLE TogRuteForekomst(
-ruteNr INT,
-dato date,
-PRIMARY KEY (ruteNr, dato),
-FOREIGN KEY(rutenr) REFERENCES Togrute(ruteNr)
-	ON UPDATE CASCADE
-	ON DELETE NO ACTION
+	ruteNr INT,
+	dato date,
+	CONSTRAINT forekomst_pk PRIMARY KEY (ruteNr, dato),
+	CONSTRAINT togrute_fk FOREIGN KEY(rutenr) REFERENCES Togrute(ruteNr)
+		ON UPDATE CASCADE
+		ON DELETE NO ACTION
 );
 
 CREATE TABLE ForekomstDato (
-dato date,
-ukedag VARCHAR(10),
-PRIMARY KEY (dato),
-FOREIGN KEY (dato) REFERENCES TogRuteForekomst(dato)
-	ON UPDATE CASCADE
-	ON DELETE NO ACTION
+	dato date,
+	ukedag VARCHAR(10),
+	CONSTRAINT dato_pk PRIMARY KEY (dato),
+	CONSTRAINT forekomst_fk FOREIGN KEY (dato) REFERENCES TogRuteForekomst(dato)
+		ON UPDATE CASCADE
+		ON DELETE NO ACTION
 );
 
 -- legger inn data 
