@@ -18,135 +18,138 @@ DROP TABLE IF EXISTS Togrute;
 DROP TABLE IF EXISTS JernbaneStasjon;
 
 CREATE TABLE JernbaneStasjon (
-navn VARCHAR(50) PRIMARY KEY,
-moh INT NOT NULL
+	navn VARCHAR(50) PRIMARY KEY,
+	moh INT NOT NULL
 );
 
 CREATE TABLE Togrute (
 	ruteNr	INT NOT NULL,
 	operator	VARCHAR(20) NOT NULL,
 	baneNavn	VARCHAR(50) NOT NULL,
-	PRIMARY KEY(ruteNr),
-	FOREIGN KEY(operator) REFERENCES Operator(navn) 
-	ON UPDATE CASCADE
-	ON DELETE NO ACTION,
-	FOREIGN KEY(baneNavn) REFERENCES BaneStrekning(navn)
-	ON UPDATE CASCADE
-	ON DELETE NO ACTION
+	CONSTRAINT rute_pk PRIMARY KEY(ruteNr),
+	CONSTRAINT op_fk FOREIGN KEY(operator) REFERENCES Operator(navn) 
+		ON UPDATE CASCADE
+		ON DELETE NO ACTION,
+	CONSTRAINT bane_fk FOREIGN KEY(baneNavn) REFERENCES BaneStrekning(navn)
+		ON UPDATE CASCADE
+		ON DELETE NO ACTION
 );
 
 CREATE TABLE BaneStrekning (
-navn VARCHAR(50) PRIMARY KEY,
-energi VARCHAR(20),
-antStasjoner INT,
-antDelstrekninger INT,
-hovedretning VARCHAR(50),
-startStasjon VARCHAR(50) NOT NULL,
-endeStasjon VARCHAR(50) NOT NULL,
-FOREIGN KEY (startStasjon) REFERENCES JernbaneStasjon(navn)
-	ON UPDATE CASCADE
-	ON DELETE NO ACTION,
-FOREIGN KEY (endeStasjon) REFERENCES JernbaneStasjon(navn)
-	ON UPDATE CASCADE
-	ON DELETE NO ACTION
+	navn VARCHAR(50),
+	energi VARCHAR(20),
+	antStasjoner INT,
+	antDelstrekninger INT,
+	hovedretning VARCHAR(50),
+	startStasjon VARCHAR(50) NOT NULL,
+	endeStasjon VARCHAR(50) NOT NULL,
+	CONSTRAINT bane_pk PRIMARY KEY(navn),
+	CONSTRAINT startStasjon_fk FOREIGN KEY (startStasjon) REFERENCES JernbaneStasjon(navn)
+		ON UPDATE CASCADE
+		ON DELETE NO ACTION,
+	CONSTRAINT endestasjon_fk FOREIGN KEY (endeStasjon) REFERENCES JernbaneStasjon(navn)
+		ON UPDATE CASCADE
+		ON DELETE NO ACTION
 );
 
 CREATE TABLE Delstrekning (
-startStasjon VARCHAR(50) NOT NULL,
-endeStasjon VARCHAR(50) NOT NULL,
-lengde INT,
-DobbeltSpor BOOLEAN,
-baneNavn VARCHAR(50) NOT NULL,
-PRIMARY KEY (startStasjon, endeStasjon),
-FOREIGN KEY (startStasjon) REFERENCES JernbaneStasjon(navn)
-	ON UPDATE CASCADE
-	ON DELETE NO ACTION,
-FOREIGN KEY (endeStasjon) REFERENCES JernbaneStasjon(navn)
-	ON UPDATE CASCADE
-	ON DELETE NO ACTION,
-FOREIGN KEY (baneNavn) REFERENCES BaneStrekning(navn)
-	ON UPDATE CASCADE
-	ON DELETE NO ACTION
+	startStasjon VARCHAR(50) NOT NULL,
+	endeStasjon VARCHAR(50) NOT NULL,
+	lengde INT,
+	DobbeltSpor BOOLEAN,
+	baneNavn VARCHAR(50) NOT NULL,
+	CONSTRAINT delstrek_pk PRIMARY KEY (startStasjon, endeStasjon),
+	CONSTRAINT startstasjon_fk FOREIGN KEY (startStasjon) REFERENCES JernbaneStasjon(navn)
+		ON UPDATE CASCADE
+		ON DELETE NO ACTION,
+	CONSTRAINT endestasjon_fk FOREIGN KEY (endeStasjon) REFERENCES JernbaneStasjon(navn)
+		ON UPDATE CASCADE
+		ON DELETE NO ACTION,
+	CONSTRAINT banenavn_fk FOREIGN KEY (baneNavn) REFERENCES BaneStrekning(navn)
+		ON UPDATE CASCADE
+		ON DELETE NO ACTION
 );
 
 CREATE TABLE StasjonPaaRute (
-stasjonsNavn VARCHAR(50) NOT NULL,
-ruteNr INT NOT NULL,
-ankomstTid TIME,
-avgangsTid TIME,
-PRIMARY KEY (stasjonsNavn, ruteNr),
-FOREIGN KEY (stasjonsNavn) REFERENCES JernbaneStasjon(navn)
-	ON UPDATE CASCADE
-	ON DELETE NO ACTION,
-FOREIGN KEY (ruteNr) REFERENCES Togrute(ruteNr)
-	ON UPDATE CASCADE
-	ON DELETE NO ACTION
+	stasjonsNavn VARCHAR(50) NOT NULL,
+	ruteNr INT NOT NULL,
+	ankomstTid TIME,
+	avgangsTid TIME,
+	CONSTRAINT stasjon_pk PRIMARY KEY (stasjonsNavn, ruteNr),
+	CONSTRAINT navn_fk FOREIGN KEY (stasjonsNavn) REFERENCES JernbaneStasjon(navn)
+		ON UPDATE CASCADE
+		ON DELETE NO ACTION,
+	CONSTRAINT ruteNr_fk FOREIGN KEY (ruteNr) REFERENCES Togrute(ruteNr)
+		ON UPDATE CASCADE
+		ON DELETE NO ACTION
 );
 
 CREATE TABLE DelstrekningPaaRute (
-startStasjon VARCHAR(50) NOT NULL,
-endeStasjon VARCHAR(50) NOT NULL,
-ruteNr INT NOT NULL,
-PRIMARY KEY (startStasjon, endeStasjon, ruteNr),
-FOREIGN KEY (startStasjon, endeStasjon) REFERENCES Delstrekning(startStasjon, endeStasjon)
-	ON UPDATE CASCADE
-	ON DELETE NO ACTION,
-FOREIGN KEY (ruteNr) REFERENCES Togrute(ruteNr)
-	ON UPDATE CASCADE
-	ON DELETE NO ACTION
+	startStasjon VARCHAR(50) NOT NULL,
+	endeStasjon VARCHAR(50) NOT NULL,
+	ruteNr INT NOT NULL,
+	CONSTRAINT delstrek_pk PRIMARY KEY (startStasjon, endeStasjon, ruteNr),
+	CONSTRAINT startende_fk FOREIGN KEY (startStasjon, endeStasjon) REFERENCES Delstrekning(startStasjon, endeStasjon)
+		ON UPDATE CASCADE
+		ON DELETE NO ACTION,
+	CONSTRAINT ruteNr_fk FOREIGN KEY (ruteNr) REFERENCES Togrute(ruteNr)
+		ON UPDATE CASCADE
+		ON DELETE NO ACTION
 );
 
 CREATE TABLE Operator (
-navn VARCHAR(20),
-PRIMARY KEY (navn)
+	navn VARCHAR(20),
+	CONSTRAINT navn_pk PRIMARY KEY (navn)
 );
 
 CREATE TABLE oppsettPaaRute (
-ruteNr INT NOT NULL,
-serieNr INT NOT NULL,
-vognNr INT NOT NULL,
-PRIMARY KEY (ruteNr, serieNr),
-FOREIGN KEY (ruteNr) REFERENCES Togrute(ruteNr)
-	ON UPDATE CASCADE
-	ON DELETE NO ACTION,
-FOREIGN KEY (serieNr) REFERENCES Vogn(serieNr)
-	ON UPDATE CASCADE
-	ON DELETE NO ACTION
+	ruteNr INT NOT NULL,
+	serieNr INT NOT NULL,
+	vognNr INT NOT NULL,
+	CONSTRAINT oppsett_pk PRIMARY KEY (ruteNr, serieNr),
+	CONSTRAINT ruteNr_fk FOREIGN KEY (ruteNr) REFERENCES Togrute(ruteNr)
+		ON UPDATE CASCADE
+		ON DELETE NO ACTION,
+	CONSTRAINT serieNr_fk FOREIGN KEY (serieNr) REFERENCES Vogn(serieNr)
+		ON UPDATE CASCADE
+		ON DELETE NO ACTION
 );
 
 CREATE TABLE Vogn (
-serieNr INT PRIMARY KEY,
-operatornavn VARCHAR(20) NOT NULL,
-FOREIGN KEY (operatornavn) REFERENCES Operator(navn)
-	ON UPDATE CASCADE
-	ON DELETE NO ACTION
+	serieNr INT NOT NULL,
+	operatornavn VARCHAR(20) NOT NULL,
+	CONSTRAINT serieNr_pk PRIMARY KEY (serieNr),
+	CONSTRAINT operator_fk FOREIGN KEY (operatornavn) REFERENCES Operator(navn)
+		ON UPDATE CASCADE
+		ON DELETE NO ACTION
 );
 
 CREATE TABLE Sittevogn (
-serieNr INT NOT NULL,
-antRader INT,
-antSeterPrRad INT,
-PRIMARY KEY (serieNr),
-FOREIGN KEY (serieNr) REFERENCES Vogn(serieNr)
-	ON UPDATE CASCADE
-	ON DELETE NO ACTION
+	serieNr INT NOT NULL,
+	antRader INT,
+	antSeterPrRad INT,
+	CONSTRAINT serie_pk PRIMARY KEY (serieNr),
+	CONSTRAINT serie_fk FOREIGN KEY (serieNr) REFERENCES Vogn(serieNr)
+		ON UPDATE CASCADE
+		ON DELETE NO ACTION
 );
 
 CREATE TABLE Sovevogn (
-serieNr INT NOT NULL,
-antKupeer INT,
-antSengerPrKupe INT,
-PRIMARY KEY (serieNr),
-FOREIGN KEY (serieNr) REFERENCES Vogn(serieNr)
-	ON UPDATE CASCADE
-	ON DELETE NO ACTION
+	serieNr INT NOT NULL,
+	antKupeer INT,
+	antSengerPrKupe INT,
+	CONSTRAINT sove_pk PRIMARY KEY (serieNr),
+	CONSTRAINT serie_fk FOREIGN KEY (serieNr) REFERENCES Vogn(serieNr)
+		ON UPDATE CASCADE
+		ON DELETE NO ACTION
 );
 
 CREATE TABLE Kunde (
-kundeNr INT PRIMARY KEY,
-navn VARCHAR(50),
-epost VARCHAR(50),
-tlf INT
+	kundeNr INT NOT NULL,
+	navn VARCHAR(50),
+	epost VARCHAR(50),
+	tlf INT,
+	CONSTRAINT kunde_pk PRIMARY KEY (kundeNr);
 );
 
 CREATE TABLE Kundeordre (
