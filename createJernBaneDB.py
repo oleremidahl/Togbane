@@ -164,7 +164,7 @@ c.execute('''CREATE TABLE Sovevogn (
 c.execute('''CREATE TABLE Kunde (
                 kundeNr INT NOT NULL,
                 navn VARCHAR(50),
-                epost VARCHAR(50),
+                email VARCHAR(50),
                 tlf INT,
                 CONSTRAINT kunde_pk PRIMARY KEY (kundeNr)
 )''')
