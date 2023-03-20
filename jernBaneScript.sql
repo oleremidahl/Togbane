@@ -1,21 +1,22 @@
 -- oppretter tabeller
 
-DROP TABLE IF EXISTS ForekomstDato;
 DROP TABLE IF EXISTS TogRuteForekomst;
+DROP TABLE IF EXISTS ForekomstDato;
 DROP TABLE IF EXISTS Billett;
 DROP TABLE IF EXISTS Kundeordre;
 DROP TABLE IF EXISTS Kunde;
 DROP TABLE IF EXISTS Sovevogn;
 DROP TABLE IF EXISTS Sittevogn;
-DROP TABLE IF EXISTS Vogn;
 DROP TABLE IF EXISTS oppsettPaaRute;
-DROP TABLE IF EXISTS Operator;
+DROP TABLE IF EXISTS Vogn;
 DROP TABLE IF EXISTS DelstrekningPaaRute;
 DROP TABLE IF EXISTS StasjonPaaRute;
 DROP TABLE IF EXISTS Delstrekning;
-DROP TABLE IF EXISTS BaneStrekning;
 DROP TABLE IF EXISTS Togrute;
+DROP TABLE IF EXISTS BaneStrekning;
 DROP TABLE IF EXISTS JernbaneStasjon;
+DROP TABLE IF EXISTS Operator;
+
 
 CREATE TABLE JernbaneStasjon (
 	navn VARCHAR(50) PRIMARY KEY,
@@ -149,7 +150,7 @@ CREATE TABLE Kunde (
 	navn VARCHAR(50),
 	epost VARCHAR(50),
 	tlf INT,
-	CONSTRAINT kunde_pk PRIMARY KEY (kundeNr);
+	CONSTRAINT kunde_pk PRIMARY KEY (kundeNr)
 );
 
 CREATE TABLE Kundeordre (
@@ -192,16 +193,16 @@ CREATE TABLE TogRuteForekomst(
 	CONSTRAINT forekomst_pk PRIMARY KEY (ruteNr, dato),
 	CONSTRAINT togrute_fk FOREIGN KEY(rutenr) REFERENCES Togrute(ruteNr)
 		ON UPDATE CASCADE
+		ON DELETE NO ACTION,
+	CONSTRAINT dato_fk FOREIGN KEY(dato) REFERENCES ForekomstDato(dato)
+		ON UPDATE CASCADE
 		ON DELETE NO ACTION
 );
 
 CREATE TABLE ForekomstDato (
 	dato date,
 	ukedag VARCHAR(10),
-	CONSTRAINT dato_pk PRIMARY KEY (dato),
-	CONSTRAINT forekomst_fk FOREIGN KEY (dato) REFERENCES TogRuteForekomst(dato)
-		ON UPDATE CASCADE
-		ON DELETE NO ACTION
+	CONSTRAINT dato_pk PRIMARY KEY (dato)
 );
 
 -- legger inn data 
@@ -276,17 +277,23 @@ INSERT INTO StasjonPaaRute VALUES ("Trondheim", 3, "14:13", "14:13");
 INSERT INTO Vogn VALUES (5, "SJ");
 INSERT INTO Sittevogn VALUES (5, 3, 4);
 INSERT INTO oppsettPaaRute VALUES (3, 5, 1);
-INSERT INTO DelstrekningPaaRute VALUES ("Mo i Rana", "Mosjøen", 3);
-INSERT INTO DelstrekningPaaRute VALUES ("Mosjøen", "Steinkjer", 3);
-INSERT INTO DelstrekningPaaRute VALUES ("Steinkjer", "Trondheim", 3);
+INSERT INTO DelstrekningPaaRute VALUES ("Trondheim", "Steinkjer", 3);
+INSERT INTO DelstrekningPaaRute VALUES ("Steinkjer", "Mosjøen", 3);
+INSERT INTO DelstrekningPaaRute VALUES ("Mosjøen", "Mo i Rana", 3);
+
+-- Dager
+INSERT INTO ForekomstDato VALUES ("2016-01-01", "Fredag");
+INSERT INTO ForekomstDato VALUES ("2016-01-02", "Lørdag");
+INSERT INTO ForekomstDato VALUES ("2016-01-03", "Søndag");
+INSERT INTO ForekomstDato VALUES ("2016-01-04", "Mandag");
+INSERT INTO ForekomstDato VALUES ("2016-01-05", "Tirsdag");
+INSERT INTO ForekomstDato VALUES ("2016-01-06", "Onsdag");
+INSERT INTO ForekomstDato VALUES ("2016-01-07", "Torsdag");
 
 -- TogruteForekomst
 INSERT INTO TogRuteForekomst VALUES (1, "2016-01-01");
-INSERT INTO ForekomstDato VALUES ("2016-01-01", "Fredag");
 INSERT INTO TogruteForekomst VALUES (1, "2016-01-02");
-INSERT INTO ForekomstDato VALUES ("2016-01-02", "Lørdag");
 INSERT INTO TogruteForekomst VALUES (1, "2016-01-03");
-INSERT INTO ForekomstDato VALUES ("2016-01-03", "Søndag");
 INSERT INTO TogRuteForekomst VALUES (2, "2016-01-01");
 INSERT INTO TogRuteForekomst VALUES (2, "2016-01-02");
 INSERT INTO TogRuteForekomst VALUES (2, "2016-01-03");
@@ -294,10 +301,6 @@ INSERT INTO TogRuteForekomst VALUES (3, "2016-01-01");
 INSERT INTO TogRuteForekomst VALUES (3, "2016-01-02");
 INSERT INTO TogRuteForekomst VALUES (3, "2016-01-03");
 INSERT INTO TogRuteForekomst VALUES (3, "2016-01-04");
-INSERT INTO ForekomstDato VALUES ("2016-01-04", "Mandag");
 INSERT INTO TogRuteForekomst VALUES (3, "2016-01-05");
-INSERT INTO ForekomstDato VALUES ("2016-01-05", "Tirsdag");
 INSERT INTO TogRuteForekomst VALUES (3, "2016-01-06");
-INSERT INTO ForekomstDato VALUES ("2016-01-06", "Onsdag");
 INSERT INTO TogRuteForekomst VALUES (3, "2016-01-07");
-INSERT INTO ForekomstDato VALUES ("2016-01-07", "Torsdag");
