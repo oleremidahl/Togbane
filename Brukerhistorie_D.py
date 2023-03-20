@@ -19,3 +19,10 @@ cursor.execute('''
 p = cursor.fetchall()
 print(p)
 con.close()
+
+# SELECT *
+# FROM (( Select *
+# 	FROM TogRuteForekomst  WHERE TogRuteForekomst.dato == "2023-04-05" OR TogRuteForekomst.dato == "2023-04-06") as TRF1
+# INNER JOIN 
+# StasjonPaaRute ON StasjonPaaRute.ruteNr == TRF1.ruteNr )
+# WHERE StasjonPaaRute.stasjonsNavn == "Trondheim"
