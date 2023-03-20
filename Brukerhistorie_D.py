@@ -2,8 +2,9 @@ import sqlite3
 con = sqlite3.connect('jernbane.db')
 cursor = con.cursor()
 
-stasjon = input("Velg en stasjon: ")
-ukedag = input("Velg en ukedag: ")
+start_stasjon = input("Velg en Startstasjon: ")
+ende_stasjon = input("Velg en EndeStasjon: ")
+dato = input("Velg en dato: ")
 
 cursor.execute('''
         SELECT TogRuteForekomst.ruteNr, ForekomstDato.ukedag, StasjonPaaRute.stasjonsNavn
