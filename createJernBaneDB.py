@@ -329,6 +329,13 @@ c.execute('''INSERT INTO TogRuteForekomst VALUES (3, "2023-04-05")''')
 c.execute('''INSERT INTO TogRuteForekomst VALUES (3, "2023-04-06")''')
 c.execute('''INSERT INTO TogRuteForekomst VALUES (3, "2023-04-07")''')
 
+# Kundeordre
+c.execute('''INSERT INTO Kundeordre VALUES (1, "2023-04-03", "08:00", 1)''')
+c.execute('''INSERT INTO Kundeordre VALUES (2, "2023-04-04", "08:00", 1)''')
+
+# Billett
+c.execute('''INSERT INTO Billett VALUES (1, "2023-04-03", 1, 1, 1, "Trondheim", "Steinkjer")''')
+c.execute('''INSERT INTO Billett VALUES (2, "2023-04-03", 1, 1, 2, "Steinkjer", "Mosjøen")''')
 
 conn.commit()
 c.close()
