@@ -119,7 +119,7 @@ c.execute('''CREATE TABLE oppsettPaaRute (
                 ruteNr INT NOT NULL,
                 serieNr INT NOT NULL,
                 vognNr INT NOT NULL,
-                CONSTRAINT oppsett_pk PRIMARY KEY (ruteNr, serieNr),
+                CONSTRAINT oppsett_pk PRIMARY KEY (ruteNr, vognNr),
                 CONSTRAINT ruteNr_fk FOREIGN KEY (ruteNr) REFERENCES Togrute(ruteNr)
                     ON UPDATE CASCADE
                     ON DELETE NO ACTION,
@@ -186,18 +186,18 @@ c.execute('''CREATE TABLE Billett (
                 ordreNr INT NOT NULL,
                 dato DATE NOT NULL,
                 ruteNr INT NOT NULL,
-                serieNr INT NOT NULL,
+                vognNr INT NOT NULL,
                 plassNr INT,
                 startStasjon VARCHAR(50),
                 endeStasjon VARCHAR(50),
-                CONSTRAINT billett_pk PRIMARY KEY (ordreNr, dato, ruteNr, serieNr, plassNr),
+                CONSTRAINT billett_pk PRIMARY KEY (ordreNr, dato, ruteNr, vognNr, plassNr, startStasjon, endeStasjon),
                 CONSTRAINT ordre_fk FOREIGN KEY (ordreNr) REFERENCES Kundeordre
                     ON UPDATE CASCADE
                     ON DELETE NO ACTION,
                 CONSTRAINT forekomst_fk FOREIGN KEY (dato, ruteNr) REFERENCES TogRuteForekomst(dato, ruteNR)
                     ON UPDATE CASCADE
                     ON DELETE NO ACTION,
-                CONSTRAINT vogn_fk FOREIGN KEY (serieNr) REFERENCES Vogn(serieNr)
+                CONSTRAINT vogn_fk FOREIGN KEY (ruteNr, vognNr) REFERENCES oppsettPaaRute(ruteNr, vognNr)
                     ON UPDATE CASCADE
                     ON DELETE NO ACTION,
                 CONSTRAINT stasjon_fk FOREIGN KEY (startStasjon, endeStasjon) REFERENCES JernbaneStasjon(startStasjon, endeStasjon)
@@ -244,6 +244,9 @@ c.execute('''INSERT INTO Delstrekning VALUES ("Steinkjer", "Mosjøen", 280, FALS
 c.execute('''INSERT INTO Delstrekning VALUES ("Mosjøen", "Mo i Rana", 90, FALSE, "NordlandsBanen")''')
 c.execute('''INSERT INTO Delstrekning VALUES ("Mo i Rana", "Fuaske", 170, FALSE, "NordlandsBanen")''')
 c.execute('''INSERT INTO Delstrekning VALUES ("Fauske", "Bodø", 60, FALSE, "NordlandsBanen")''')
+c.execute('''INSERT INTO Delstrekning VALUES ("Steinkjer", "Trondheim", 120, TRUE, "NordlandsBanen");''')
+c.execute('''INSERT INTO Delstrekning VALUES ("Mosjøen", "Steinkjer", 280, FALSE, "NordlandsBanen");''')
+c.execute('''INSERT INTO Delstrekning VALUES ("Mo i Rana", "Mosjøen", 90, FALSE, "NordlandsBanen");''')
 
 # Insert data into Operator table
 c.execute("INSERT INTO Operator VALUES ('SJ')")
@@ -297,9 +300,9 @@ c.execute('''INSERT INTO StasjonPaaRute VALUES ("Trondheim", 3, "14:13", "NULL")
 c.execute('''INSERT INTO Vogn VALUES (5, "SJ")''')
 c.execute('''INSERT INTO Sittevogn VALUES (5, 3, 4)''')
 c.execute('''INSERT INTO oppsettPaaRute VALUES (3, 5, 1)''')
-c.execute('''INSERT INTO DelstrekningPaaRute VALUES ("Trondheim", "Steinkjer", 3)''')
-c.execute('''INSERT INTO DelstrekningPaaRute VALUES ("Steinkjer", "Mosjøen", 3)''')
-c.execute('''INSERT INTO DelstrekningPaaRute VALUES ("Mosjøen", "Mo i Rana", 3)''')
+c.execute('''INSERT INTO DelstrekningPaaRute VALUES ("Mo i Rana", "Mosjøen", 3)''')
+c.execute('''INSERT INTO DelstrekningPaaRute VALUES ("Mosjøen", "Steinkjer", 3)''')
+c.execute('''INSERT INTO DelstrekningPaaRute VALUES ("Steinkjer", "Trondheim", 3)''')
 
 # Dager
 c.execute('''INSERT INTO ForekomstDato VALUES ("2023-04-03", "Mandag")''')
@@ -329,6 +332,17 @@ c.execute('''INSERT INTO TogRuteForekomst VALUES (3, "2023-04-05")''')
 c.execute('''INSERT INTO TogRuteForekomst VALUES (3, "2023-04-06")''')
 c.execute('''INSERT INTO TogRuteForekomst VALUES (3, "2023-04-07")''')
 
+c.execute('''INSERT INTO Kunde VALUES (1, "Ole", "o@o.o", 123)''')
+c.execute('''INSERT INTO Kunde VALUES (2, "Vidar", "v@i.d", 1234)''')
+c.execute('''INSERT INTO KundeOrdre VALUES (2, "2023-03-23", "10:31", 1)''')
+c.execute('''INSERT INTO KundeOrdre VALUES (1, "2023-03-23", "10:31", 2)''')
+c.execute('''INSERT INTO Billett VALUES (1, "2023-04-03", 1, 2, 6, "Trondheim", "Fauske")''')
+c.execute('''INSERT INTO Billett VALUES (1, "2023-04-03", 1, 1, 6, "Trondheim", "Fauske")''')
+c.execute('''INSERT INTO Billett VALUES (2, "2023-04-03", 3, 1, 6, "Steinkjer", "Trondheim")''')
+c.execute('''INSERT INTO Billett VALUES (2, "2023-04-03", 2, 1, 6, "Trondheim", "Steinkjer")''')
+c.execute('''INSERT INTO Billett VALUES (2, "2023-04-03", 2, 1, 6, "Steinkjer", "Bodø")''')
+c.execute('''INSERT INTO Billett VALUES (2, "2023-04-03", 2, 2, 8, "Trondheim", "Mo i Rana")''')
+c.execute('''INSERT INTO Billett VALUES (2, "2023-04-03", 1, 1, 3, "Mo i Rana", "Fauske")''')
 
 conn.commit()
 c.close()

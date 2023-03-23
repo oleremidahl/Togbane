@@ -1,7 +1,6 @@
 -- oppretter tabeller
 
-DROP TABLE IF EXISTS TogRuteForekomst;
-DROP TABLE IF EXISTS ForekomstDato;
+
 DROP TABLE IF EXISTS Billett;
 DROP TABLE IF EXISTS Kundeordre;
 DROP TABLE IF EXISTS Kunde;
@@ -12,10 +11,17 @@ DROP TABLE IF EXISTS Vogn;
 DROP TABLE IF EXISTS DelstrekningPaaRute;
 DROP TABLE IF EXISTS StasjonPaaRute;
 DROP TABLE IF EXISTS Delstrekning;
+DROP TABLE IF EXISTS TogRuteForekomst;
+
+DROP TABLE IF EXISTS ForekomstDato;
+
+
 DROP TABLE IF EXISTS Togrute;
+
 DROP TABLE IF EXISTS BaneStrekning;
-DROP TABLE IF EXISTS JernbaneStasjon;
 DROP TABLE IF EXISTS Operator;
+DROP TABLE IF EXISTS JernbaneStasjon;
+
 
 
 CREATE TABLE JernbaneStasjon (
@@ -107,7 +113,7 @@ CREATE TABLE oppsettPaaRute (
 	ruteNr INT NOT NULL,
 	serieNr INT NOT NULL,
 	vognNr INT NOT NULL,
-	CONSTRAINT oppsett_pk PRIMARY KEY (ruteNr, serieNr),
+	CONSTRAINT oppsett_pk PRIMARY KEY (ruteNr, vognNr),
 	CONSTRAINT ruteNr_fk FOREIGN KEY (ruteNr) REFERENCES Togrute(ruteNr)
 		ON UPDATE CASCADE
 		ON DELETE NO ACTION,
@@ -168,21 +174,24 @@ CREATE TABLE Billett (
 	ordreNr INT NOT NULL,
 	dato DATE NOT NULL,
 	ruteNr INT NOT NULL,
-	serieNr INT NOT NULL,
+	vognNr INT NOT NULL,
 	plassNr INT,
 	startStasjon VARCHAR(50),
 	endeStasjon VARCHAR(50),
-	CONSTRAINT billett_pk PRIMARY KEY (ordreNr, dato, ruteNr, serieNr, plassNr),
+	CONSTRAINT billett_pk PRIMARY KEY (ordreNr, dato, ruteNr, vognNr, plassNr, startStasjon, endeStasjon),
 	CONSTRAINT ordre_fk FOREIGN KEY (ordreNr) REFERENCES Kundeordre
 		ON UPDATE CASCADE
 		ON DELETE NO ACTION,
 	CONSTRAINT forekomst_fk FOREIGN KEY (dato, ruteNr) REFERENCES TogRuteForekomst(dato, ruteNR)
 		ON UPDATE CASCADE
 		ON DELETE NO ACTION,
-	CONSTRAINT vogn_fk FOREIGN KEY (serieNr) REFERENCES Vogn(serieNr)
+	CONSTRAINT oppsett_fk FOREIGN KEY (ruteNr, vognNr) REFERENCES oppsettPaaRute(ruteNr, vognNr)
 		ON UPDATE CASCADE
 		ON DELETE NO ACTION,
-	CONSTRAINT stasjon_fk FOREIGN KEY (startStasjon, endeStasjon) REFERENCES JernbaneStasjon(startStasjon, endeStasjon)
+	CONSTRAINT startstasjon_fk FOREIGN KEY (startStasjon) REFERENCES JernbaneStasjon(navn)
+		ON UPDATE CASCADE
+		ON DELETE NO ACTION,
+	CONSTRAINT endestasjon_fk FOREIGN KEY (endeStasjon) REFERENCES JernbaneStasjon(navn)
 		ON UPDATE CASCADE
 		ON DELETE NO ACTION
 );
@@ -224,6 +233,9 @@ INSERT INTO Delstrekning VALUES ("Steinkjer", "Mosjøen", 280, FALSE, "Nordlands
 INSERT INTO Delstrekning VALUES ("Mosjøen", "Mo i Rana", 90, FALSE, "NordlandsBanen");
 INSERT INTO Delstrekning VALUES ("Mo i Rana", "Fauske", 170, FALSE, "NordlandsBanen");
 INSERT INTO Delstrekning VALUES ("Fauske", "Bodø", 60, FALSE, "NordlandsBanen");
+INSERT INTO Delstrekning VALUES ("Steinkjer", "Trondheim", 120, TRUE, "NordlandsBanen");
+INSERT INTO Delstrekning VALUES ("Mosjøen", "Steinkjer", 280, FALSE, "NordlandsBanen");
+INSERT INTO Delstrekning VALUES ("Mo i Rana", "Mosjøen", 90, FALSE, "NordlandsBanen");
 
 -- Operatør
 INSERT INTO Operator VALUES ("SJ");
@@ -277,9 +289,9 @@ INSERT INTO StasjonPaaRute VALUES ("Trondheim", 3, "14:13", "14:13");
 INSERT INTO Vogn VALUES (5, "SJ");
 INSERT INTO Sittevogn VALUES (5, 3, 4);
 INSERT INTO oppsettPaaRute VALUES (3, 5, 1);
-INSERT INTO DelstrekningPaaRute VALUES ("Trondheim", "Steinkjer", 3);
-INSERT INTO DelstrekningPaaRute VALUES ("Steinkjer", "Mosjøen", 3);
-INSERT INTO DelstrekningPaaRute VALUES ("Mosjøen", "Mo i Rana", 3);
+INSERT INTO DelstrekningPaaRute VALUES ("Mo i Rana", "Mosjøen", 3);
+INSERT INTO DelstrekningPaaRute VALUES ("Mosjøen", "Steinkjer", 3);
+INSERT INTO DelstrekningPaaRute VALUES ("Steinkjer", "Trondheim", 3);
 
 -- Dager
 INSERT INTO ForekomstDato VALUES ("2023-04-03", "Mandag");
@@ -308,3 +320,13 @@ INSERT INTO TogRuteForekomst VALUES (3, "2023-04-04");
 INSERT INTO TogRuteForekomst VALUES (3, "2023-04-05");
 INSERT INTO TogRuteForekomst VALUES (3, "2023-04-06");
 INSERT INTO TogRuteForekomst VALUES (3, "2023-04-07");
+
+
+INSERT INTO Kunde VALUES (1, "Ole", "o@o.o", 123);
+INSERT INTO Kunde VALUES (2, "Vidar", "v@i.d", 1234);
+INSERT INTO KundeOrdre VALUES (2, "2023-03-23", "10:31", 1);
+INSERT INTO KundeOrdre VALUES (1, "2023-03-23", "10:31", 2);
+INSERT INTO Billett VALUES (1, "2023-04-03", 1, 2, 6, "Trondheim", "Fauske");
+INSERT INTO Billett VALUES (1, "2023-04-03", 1, 1, 6, "Trondheim", "Fauske");
+INSERT INTO Billett VALUES (2, "2023-04-03", 3, 1, 6, "Steinkjer", "Trondheim");
+INSERT INTO Billett VALUES (2, "2023-04-03", 2, 1, 6, "Trondheim", "Steinkjer");

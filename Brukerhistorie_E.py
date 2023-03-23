@@ -16,7 +16,7 @@ telefon = input("Skriv inn telefonnummer: ")
 
 cursor.execute("INSERT INTO Kunde VALUES(?,?,?,?)", (kundeNr, navn, epost, telefon))
 con.commit()
-
+print("Velkommen ", navn, "! Ditt kundeNr er: ", kundeNr)
 cursor.execute("SELECT * FROM Kunde")
 p = cursor.fetchall()
 print(p)
