@@ -89,7 +89,7 @@ def finn_stasjoner_paa_billetter(billetter):
     return stasjonerPaaBilletter
 
 def finn_sove_billetter(dato):
-    cursor.execute(f'''SELECT Billett.vognNr, plassNr, Billett.dato
+    cursor.execute(f'''SELECT Billett.vognNr, plassNr
                         FROM Billett INNER JOIN oppsettPaaRute ON Billett.ruteNr = oppsettPaaRute.ruteNr AND Billett.vognNr = oppsettPaaRute.vognNr
                         INNER JOIN Sovevogn ON Sovevogn.serieNr = oppsettPaaRute.serieNr 
                         WHERE Billett.ruteNr = {rute} AND Billett.dato = "{dato}"
@@ -126,16 +126,18 @@ def finn_overlappende_billetter(stasj_sitte, sove_billetter):
             overlappende_billetter.append((int(vognNr), int(plassNr)))
     
     for b in sove_billetter:
-        tup = (b[0],b[1],b[2])
+        tup = (b[0],b[1])
         if (tup not in overlappende_billetter):
             overlappende_billetter.append(tup)
+    
     return overlappende_billetter
 
 overlappende_billetter_3 = finn_overlappende_billetter(stasj_sitte_3, sove_3_april)
 overlappende_billetter_4 = finn_overlappende_billetter(stasj_sitte_4, sove_4_april)
 
 
-# print(f"Følgende billetter overlapper med den ønskede ruten: {overlappende_billetter}")
+print(f"Følgende billetter overlapper med den ønskede ruten den 3.april: {overlappende_billetter_3}")
+print(f"Følgende billetter overlapper med den ønskede ruten den 4.april: {overlappende_billetter_4}")
 
 
 if (gyldigStrekning):
@@ -201,15 +203,18 @@ if (gyldigStrekning):
     ledige_seter_4 = fjern_opptatte_seter(plassNrPaaRute_4, overlappende_billetter_4)
     # print(plassNrPaaRute)
     # Presenterer plasser
-    def presenter_seter(ledige_seter):
+    def presenter_seter(ledige_seter, dato):
+        dtstring = "2023-04-03"
+        if (dato == 4):
+            dtstring = "2023-04-04"
         for n, vogn in ledige_seter.items():
-            output_str = f"Rute {n}: "
+            output_str = f"Dato: {dtstring},\n Rute {n}: "
             for key, values in vogn.items():
                 output_str += f"Vogn {key} har følgende plasser: {values}. "
             print(output_str)
 
-    presenter_seter(ledige_seter_3)
-    presenter_seter(ledige_seter_4)
+    presenter_seter(ledige_seter_3, 3)
+    presenter_seter(ledige_seter_4, 4)
 
 
 # cursor.execute("SELECT * FROM Billett")
