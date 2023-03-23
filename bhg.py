@@ -92,7 +92,7 @@ def finn_sove_billetter(dato):
     cursor.execute(f'''SELECT Billett.vognNr, plassNr, Billett.dato
                         FROM Billett INNER JOIN oppsettPaaRute ON Billett.ruteNr = oppsettPaaRute.ruteNr AND Billett.vognNr = oppsettPaaRute.vognNr
                         INNER JOIN Sovevogn ON Sovevogn.serieNr = oppsettPaaRute.serieNr 
-                        WHERE Billett.ruteNr = {rute} AND Billett.dato = {dato}
+                        WHERE Billett.ruteNr = {rute} AND Billett.dato = "{dato}"
                     ''')
     return cursor.fetchall()
 
@@ -100,7 +100,7 @@ def finn_sittebiletter(dato):
     cursor.execute(f'''SELECT dato, Billett.ruteNr, Billett.vognNr, Billett.plassNr, startStasjon, endeStasjon
                         FROM Billett INNER JOIN oppsettPaaRute  ON Billett.ruteNr = oppsettPaaRute.ruteNr AND Billett.vognNr = oppsettPaaRute.vognNr
                         INNER JOIN Sittevogn ON Sittevogn.serieNr = oppsettPaaRute.serieNr 
-                        WHERE Billett.ruteNr = {rute} AND dato = {dato}
+                        WHERE Billett.ruteNr = {rute} AND dato = "{dato}"
                     ''')
     return cursor.fetchall()
 

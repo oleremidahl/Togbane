@@ -334,8 +334,12 @@ c.execute('''INSERT INTO TogRuteForekomst VALUES (3, "2023-04-07")''')
 
 c.execute('''INSERT INTO Kunde VALUES (1, "Ole", "o@o.o", 123)''')
 c.execute('''INSERT INTO Kunde VALUES (2, "Vidar", "v@i.d", 1234)''')
+
 c.execute('''INSERT INTO KundeOrdre VALUES (2, "2023-03-23", "10:31", 1)''')
 c.execute('''INSERT INTO KundeOrdre VALUES (1, "2023-03-23", "10:31", 2)''')
+# Billett
+c.execute('''INSERT INTO Billett VALUES (1, "2023-04-03", 1, 1, 1, "Trondheim", "Steinkjer")''')
+c.execute('''INSERT INTO Billett VALUES (2, "2023-04-03", 1, 1, 2, "Steinkjer", "Mosjøen")''')
 c.execute('''INSERT INTO Billett VALUES (1, "2023-04-03", 1, 2, 6, "Trondheim", "Fauske")''')
 c.execute('''INSERT INTO Billett VALUES (1, "2023-04-03", 1, 1, 6, "Trondheim", "Fauske")''')
 c.execute('''INSERT INTO Billett VALUES (2, "2023-04-03", 3, 1, 6, "Steinkjer", "Trondheim")''')
