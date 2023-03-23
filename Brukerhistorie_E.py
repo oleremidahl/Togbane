@@ -31,8 +31,17 @@ con.commit()
 print("Velkommen ", navn, "! Ditt kundeNr er: ", kundeNr)
 cursor.execute("SELECT * FROM Kunde")
 p = cursor.fetchall()
+print("------ Kunderegister ------")
 for rad in p:
-    oversikt = "Kundenummer: {}, Navn: {}, Epost: {}, Telefonnummer: {}".format(rad[0], rad[1], rad[2], rad[3])
-    print(oversikt)
+    kundenummer = rad[0]
+    navn = rad[1]
+    epost = rad[2]
+    telefonnummer = rad[3]
+
+    print(f"Kundenummer: {kundenummer}")
+    print(f"Navn: {navn}")
+    print(f"Epost: {epost}")
+    print(f"Telefonnummer: {telefonnummer}")
+    print("------------------------")
 
 con.close()

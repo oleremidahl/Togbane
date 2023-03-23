@@ -190,19 +190,22 @@ c.execute('''CREATE TABLE Billett (
                 plassNr INT,
                 startStasjon VARCHAR(50),
                 endeStasjon VARCHAR(50),
+                avgangsTid TIME,
+                ankomstTid TIME,
                 CONSTRAINT billett_pk PRIMARY KEY (ordreNr, dato, ruteNr, vognNr, plassNr, startStasjon, endeStasjon),
                 CONSTRAINT ordre_fk FOREIGN KEY (ordreNr) REFERENCES Kundeordre
                     ON UPDATE CASCADE
                     ON DELETE NO ACTION,
-                CONSTRAINT forekomst_fk FOREIGN KEY (dato, ruteNr) REFERENCES TogRuteForekomst(dato, ruteNR)
+                CONSTRAINT forekomst_fk FOREIGN KEY (dato, ruteNr) REFERENCES TogRuteForekomst(dato, ruteNr)
                     ON UPDATE CASCADE
                     ON DELETE NO ACTION,
-                CONSTRAINT vogn_fk FOREIGN KEY (ruteNr, vognNr) REFERENCES oppsettPaaRute(ruteNr, vognNr)
+                CONSTRAINT oppsett_fk FOREIGN KEY (vognNr) REFERENCES oppsettPaaRute(vognNr)
                     ON UPDATE CASCADE
                     ON DELETE NO ACTION,
                 CONSTRAINT stasjon_fk FOREIGN KEY (startStasjon, endeStasjon) REFERENCES JernbaneStasjon(startStasjon, endeStasjon)
                     ON UPDATE CASCADE
                     ON DELETE NO ACTION
+                CONSTRAINT tid_fk FOREIGN KEY (avgangsTid, ankomstTid) REFERENCES StasjonPaaRute(avgangsTid, ankomstTid)
 )''')
 
 # Create TogruteForekomst table
@@ -332,21 +335,22 @@ c.execute('''INSERT INTO TogRuteForekomst VALUES (3, "2023-04-05")''')
 c.execute('''INSERT INTO TogRuteForekomst VALUES (3, "2023-04-06")''')
 c.execute('''INSERT INTO TogRuteForekomst VALUES (3, "2023-04-07")''')
 
-c.execute('''INSERT INTO Kunde VALUES (1, "Ole", "o@o.o", 123)''')
-c.execute('''INSERT INTO Kunde VALUES (2, "Vidar", "v@i.d", 1234)''')
-
+# Kundeordre
 c.execute('''INSERT INTO KundeOrdre VALUES (2, "2023-03-23", "10:31", 1)''')
-c.execute('''INSERT INTO KundeOrdre VALUES (1, "2023-03-23", "10:31", 2)''')
+c.execute('''INSERT INTO KundeOrdre VALUES (1, "2023-03-24", "12:25", 2)''')
+c.execute('''INSERT INTO KundeOrdre VALUES (3, "2023-03-25", "12:40", 1)''')
+
 # Billett
-c.execute('''INSERT INTO Billett VALUES (1, "2023-04-03", 1, 1, 1, "Trondheim", "Steinkjer")''')
-c.execute('''INSERT INTO Billett VALUES (2, "2023-04-03", 1, 1, 2, "Steinkjer", "Mosjøen")''')
-c.execute('''INSERT INTO Billett VALUES (1, "2023-04-03", 1, 2, 6, "Trondheim", "Fauske")''')
-c.execute('''INSERT INTO Billett VALUES (1, "2023-04-03", 1, 1, 6, "Trondheim", "Fauske")''')
-c.execute('''INSERT INTO Billett VALUES (2, "2023-04-03", 3, 1, 6, "Steinkjer", "Trondheim")''')
-c.execute('''INSERT INTO Billett VALUES (2, "2023-04-03", 2, 1, 6, "Trondheim", "Steinkjer")''')
-c.execute('''INSERT INTO Billett VALUES (2, "2023-04-03", 2, 1, 6, "Steinkjer", "Bodø")''')
-c.execute('''INSERT INTO Billett VALUES (2, "2023-04-03", 2, 2, 8, "Trondheim", "Mo i Rana")''')
-c.execute('''INSERT INTO Billett VALUES (2, "2023-04-03", 1, 1, 3, "Mo i Rana", "Fauske")''')
+c.execute('''INSERT INTO Billett VALUES (1, "2023-04-03", 1, 1, 1, "Trondheim", "Steinkjer", "07:49", "09:51")''')
+c.execute('''INSERT INTO Billett VALUES (2, "2023-04-03", 1, 1, 2, "Steinkjer", "Mosjøen", "09:51", "13:20")''')
+c.execute('''INSERT INTO Billett VALUES (1, "2023-04-03", 1, 2, 6, "Trondheim", "Fauske", "07:49", "16:49")''')
+c.execute('''INSERT INTO Billett VALUES (1, "2023-04-03", 1, 1, 6, "Trondheim", "Fauske", "07:49", "16:49")''')
+c.execute('''INSERT INTO Billett VALUES (2, "2023-04-03", 3, 1, 6, "Steinkjer", "Trondheim", "12:31", "14:13")''')
+c.execute('''INSERT INTO Billett VALUES (2, "2023-04-03", 2, 1, 6, "Trondheim", "Steinkjer", "23:05", "00:57")''')
+c.execute('''INSERT INTO Billett VALUES (2, "2023-04-03", 2, 1, 6, "Steinkjer", "Bodø", "00:57", "09:05")''')
+c.execute('''INSERT INTO Billett VALUES (2, "2023-04-03", 2, 2, 8, "Trondheim", "Mo i Rana", "23:05", "05:55")''')
+c.execute('''INSERT INTO Billett VALUES (2, "2023-04-03", 1, 1, 3, "Mo i Rana", "Fauske", "14:31", "16:49")''')
+c.execute('''INSERT INTO Billett VALUES (3, "2023-04-03", 3, 2, 6, "Mo i Rana", "Trondheim", "08:11", "14:13")''')
 
 conn.commit()
 c.close()
