@@ -332,6 +332,7 @@ c.execute('''INSERT INTO TogRuteForekomst VALUES (3, "2023-04-05")''')
 c.execute('''INSERT INTO TogRuteForekomst VALUES (3, "2023-04-06")''')
 c.execute('''INSERT INTO TogRuteForekomst VALUES (3, "2023-04-07")''')
 
+<<<<<<< HEAD
 c.execute('''INSERT INTO Kunde VALUES (1, "Ole", "o@o.o", 123)''')
 c.execute('''INSERT INTO Kunde VALUES (2, "Vidar", "v@i.d", 1234)''')
 c.execute('''INSERT INTO KundeOrdre VALUES (2, "2023-03-23", "10:31", 1)''')
@@ -343,6 +344,15 @@ c.execute('''INSERT INTO Billett VALUES (2, "2023-04-03", 2, 1, 6, "Trondheim", 
 c.execute('''INSERT INTO Billett VALUES (2, "2023-04-03", 2, 1, 6, "Steinkjer", "Bodø")''')
 c.execute('''INSERT INTO Billett VALUES (2, "2023-04-03", 2, 2, 8, "Trondheim", "Mo i Rana")''')
 c.execute('''INSERT INTO Billett VALUES (2, "2023-04-03", 1, 1, 3, "Mo i Rana", "Fauske")''')
+=======
+# Kundeordre
+c.execute('''INSERT INTO Kundeordre VALUES (1, "2023-04-03", "08:00", 1)''')
+c.execute('''INSERT INTO Kundeordre VALUES (2, "2023-04-04", "08:00", 1)''')
+
+# Billett
+c.execute('''INSERT INTO Billett VALUES (1, "2023-04-03", 1, 1, 1, "Trondheim", "Steinkjer")''')
+c.execute('''INSERT INTO Billett VALUES (2, "2023-04-03", 1, 1, 2, "Steinkjer", "Mosjøen")''')
+>>>>>>> 4a9443d228432247f52c4141beaacdce1572bb74
 
 conn.commit()
 c.close()
