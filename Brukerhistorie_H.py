@@ -5,7 +5,7 @@ cursor = con.cursor()
 
 kundenr = input("Oppgi kundenummeret ditt: ")
 
-# SQL-spørring for å sjekke om en kunde finnes i databasen
+# Sjekker om en kunde finnes i databasen basert på kundenummer
 sjekk = """
 SELECT COUNT(*)
 FROM Kunde
@@ -17,11 +17,11 @@ antall_rader = cursor.fetchone()[0]
 
 if antall_rader > 0:
   
-    # SQL-spørring for å hente informasjon om bestillinger for fremtidige reiser for en gitt kunde
+    # Henter informasjon om bestillinger for fremtidige reiser for en gitt kunde 
     info = """
     SELECT * FROM Billett b
     JOIN Kundeordre ko ON b.ordreNr = ko.ordreNr
-    WHERE ko.kundeNr = ? AND b.dato > date('now')
+    WHERE ko.kundeNr = ? AND b.dato > datetime('now')
     """
 
     # Viser informasjon om bestillinger for fremtidige reiser gitt at kunden eksisterer og har bestilt minst én billett
