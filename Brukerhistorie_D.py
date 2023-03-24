@@ -110,10 +110,12 @@ def start_og_slutt_nummer(list, start_stasjon, ende_stasjon):
                         slutt_nummer = el[2]
         return start_nummer, slutt_nummer
 
-def sorter_paa_dato(lst): #Sorterer listen på dato, så på tidspunkt om de går samme dag.
+        #Sorterer listen på dato, så på tidspunkt om de går samme dag.
+def sorter_paa_dato(lst):
         return sorted(lst, key=lambda x: (x[3], x[2]))
 
-def pretty_print_ruter(gyldige_ruter): #Pretty print for de gjeldene rutene i søket.
+        #Pretty print for de gjeldene rutene i søket.
+def pretty_print_ruter(gyldige_ruter):
         print("RuteNr\t| Stasjonsnavn\t| Avgangstid\t| Dato")
         print("---------------------------------------------------")
         for el in gyldige_ruter:
