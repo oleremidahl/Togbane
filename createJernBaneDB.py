@@ -335,6 +335,9 @@ c.execute('''INSERT INTO TogRuteForekomst VALUES (3, "2023-04-05")''')
 c.execute('''INSERT INTO TogRuteForekomst VALUES (3, "2023-04-06")''')
 c.execute('''INSERT INTO TogRuteForekomst VALUES (3, "2023-04-07")''')
 
+#Kunde
+c.execute('''INSERT INTO Kunde VALUES (1, "Ole", "o@o.o", 123)''')
+c.execute('''INSERT INTO Kunde VALUES (2, "Vidar", "v@i.d", 1234);''')
 # Kundeordre
 c.execute('''INSERT INTO KundeOrdre VALUES (2, "2023-03-23", "10:31", 1)''')
 c.execute('''INSERT INTO KundeOrdre VALUES (1, "2023-03-24", "12:25", 2)''')
