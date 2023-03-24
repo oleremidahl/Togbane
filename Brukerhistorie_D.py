@@ -5,7 +5,12 @@ cursor = con.cursor()
         #Henter ut alle togruteforekomster som går på en gitt dato + neste dag etter.
 def get_ruter_dato(dato): 
         res = ""
-        imorgen = dato[:-1] + str(int(dato[-1])+1)
+        try: 
+                imorgen = dato[:-1] + str(int(dato[-1])+1)
+        except:
+                print("Datoen må være på formatet yyyy-mm-dd")
+                dato = input("Velg en ny dato (yyyy-mm-dd): ")
+                imorgen = dato[:-1] + str(int(dato[-1])+1)
         forekomster = get_ruter_dato_sql_kall(dato, imorgen)
         dato_dict = {}
         while (res != "q" and len(forekomster) == 0):
@@ -116,7 +121,7 @@ def sorter_paa_dato(lst):
 
         #Pretty print for de gjeldene rutene i søket.
 def pretty_print_ruter(gyldige_ruter):
-        print("RuteNr\t| Stasjonsnavn\t| Avgangstid\t| Dato")
+        print("\nRuteNr\t| Stasjonsnavn\t| Avgangstid\t| Dato")
         print("---------------------------------------------------")
         for el in gyldige_ruter:
                 print(el[0],"\t| ",el[1],"\t| ",el[2],"\t| ",el[3])
@@ -127,15 +132,17 @@ def main():
 i starten av april. Alle rutene går fra 3 til 7.april.
 Ellers går kun rute 2 den 8 og 9.april. Et eksempel på en dato er '2023-04-05'""")
         dato = input("Velg en dato (yyyy-mm-dd): ")
-        pp = get_ruter_dato(dato)
-        dd = get_stasjoner_paa_rute(pp)
-        gyldige_stasjoner = get_gyldige_stasjoner()
-        pretty_print_station(dd,pp)
-        print("Dette er de rutene som går på valgt dato")
+
+        forekomst_ruter = get_ruter_dato(dato) #Henter ut ruter som går på dato
+        stasjon_paa_rute = get_stasjoner_paa_rute(forekomst_ruter) #Henter ut stasjonene på de valgte rutene
+        gyldige_stasjoner = get_gyldige_stasjoner() #Henter ut alle databaser
+        pretty_print_station(stasjon_paa_rute, forekomst_ruter) #Printer ut info om rutene og stasjonene
+
+        print("Dette er de rutene som går på valgt dato \n")
         print("Vi aksepterer kun direkte kopi av stasjonsnavnet, Feks 'Trondheim'")
-        start_stasjon = check_gyldig_stasjon("start", gyldige_stasjoner)
-        ende_stasjon = check_gyldig_stasjon("ende", gyldige_stasjoner)
-        gyldige_ruter = get_valid_rutes(start_stasjon, ende_stasjon, dd, pp)
+        start_stasjon = check_gyldig_stasjon("start", gyldige_stasjoner) #Validerer input fra bruker
+        ende_stasjon = check_gyldig_stasjon("ende", gyldige_stasjoner) #Validerer input fra bruker
+        gyldige_ruter = get_valid_rutes(start_stasjon, ende_stasjon, stasjon_paa_rute, forekomst_ruter)
         if (gyldige_ruter == []):
                 print("Ingen ruter som passer på valgt input")
                 con.close()
