@@ -33,6 +33,9 @@ def sjekk_tidspunkt(tidspunkt): # "hh:mm"
 
 #Prettyprint for biletter
 def print_billett(billetter):
+    if (billetter == []):
+        print("Ingen fremtidige billetter funnet.")
+        return
     print("\nDine bestillinger for fremtidige reiser:")
     print("---------------------------------------")
     for rad in billetter:
@@ -52,12 +55,9 @@ def print_billett(billetter):
         print("Ordrenummer:", ordrenummer)
         print("Dato:", dato)
         print("Rutenummer:", rutenummer)
-        print("Vognnummer:", vognnummer)
-        print("Setenummer:", setenummer)
-        print("Startstasjon:", startstasjon)
-        print("Endestasjon:", endestasjon)
-        print("Avgang:", avgang)
-        print("Ankomst:", ankomst)
+        print("VognNr, PlassNr:", vognnummer , ",", setenummer)
+        print("Startstasjon:", startstasjon + ", " + avgang)
+        print("Endestasjon:", endestasjon + ", " + ankomst)
         print("--------------------------")
 
 billettKall = """
@@ -68,6 +68,8 @@ billettKall = """
     """
 
 def main():
+    print("""Vi har opprettet data for kundeNr 1, 2 og 3.
+Kunde 1 og 2 har kjøpt noen billetter, mens 3 har ikke""")
     billetter = hent_kundeinfo(billettKall)
     print_billett(billetter)
     con.close()
