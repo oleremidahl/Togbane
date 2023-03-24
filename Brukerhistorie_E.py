@@ -45,8 +45,8 @@ def vis_kunderegister():
         print("------------------------")
 
 def main():
+    navn = input("Skriv inn navn: ")
     while True:
-        navn = input("Skriv inn navn: ")
         email = input("Skriv inn epost: ")
         tlf = input("Skriv inn telefonnummer: ")
         
