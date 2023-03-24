@@ -243,6 +243,20 @@ if (gyldigStrekning):
                     output_str += f"Vogn {key} har følgende plasser: {values}. \n"
             print(output_str)
 
+    def pretty_print_seter(ledige_seter_3, x):
+        for nr, vogn in ledige_seter_3.items():
+            output_str = f"Dato: 2023-04-0{x}, Rute {nr}: \n"
+            for key, values in vogn.items():
+                array2 = ledige_seter_3[nr][key]
+                if (all(isinstance(item, list) and len(item) == 2 for item in array2)):
+                    output_str += f"Vogn {key} er en sovevogn og har følgende kupéer med senger:\n"
+                    for i, kupe in enumerate(array2):
+                       output_str += f"| Kupe: {i+1}; Senger: {', '.join(map(str, kupe))} |\n"
+                else:
+                    output_str += f"Vogn {key} har følgende plasser: {values}. \n"
+            print(output_str)
+
+    pretty_print_seter(ledige_seter_3, 3)
     presenter_seter(ledige_seter_3, 3)
     presenter_seter(ledige_seter_4, 4)
 

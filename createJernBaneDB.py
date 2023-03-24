@@ -335,19 +335,11 @@ c.execute('''INSERT INTO TogRuteForekomst VALUES (3, "2023-04-05")''')
 c.execute('''INSERT INTO TogRuteForekomst VALUES (3, "2023-04-06")''')
 c.execute('''INSERT INTO TogRuteForekomst VALUES (3, "2023-04-07")''')
 
-# Kunde 
-c.execute('''INSERT INTO Kunde VALUES (1, "Ola", "ola@gmail.com", "12345678")''')
-c.execute('''INSERT INTO Kunde VALUES (2, "Kari", "kari@hotmail.no", "87654321")''')
-c.execute('''INSERT INTO Kunde VALUES (3, "Per", "per12@gmail.coo", "12345678")''')
-
-# Kunde 
-c.execute('''INSERT INTO Kunde VALUES (1, "Ola", "ola@gmail.com", "12345678")''')
-c.execute('''INSERT INTO Kunde VALUES (2, "Kari", "kari@hotmail.no", "87654321")''')
-c.execute('''INSERT INTO Kunde VALUES (3, "Per", "per12@gmail.coo", "12345678")''')
-
-#Kunde
+# Kunde
 c.execute('''INSERT INTO Kunde VALUES (1, "Ole", "o@o.o", 123)''')
 c.execute('''INSERT INTO Kunde VALUES (2, "Vidar", "v@i.d", 1234);''')
+c.execute('''INSERT INTO Kunde VALUES (3, "Kari", "kari@d.no", 40404040)''')
+
 # Kundeordre
 c.execute('''INSERT INTO KundeOrdre VALUES (2, "2023-03-23", "10:31", 1)''')
 c.execute('''INSERT INTO KundeOrdre VALUES (1, "2023-02-01", "12:25", 2)''')
