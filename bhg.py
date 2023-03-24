@@ -232,7 +232,7 @@ if (gyldigStrekning):
         if (dato == 4):
             dtstring = "2023-04-04"
         for nr, vogn in ledige_seter.items():
-            output_str = f"Dato: {dtstring},\n Rute {nr}: \n"
+            output_str = f"Dato: {dtstring},\n Rute {nr}:\n"
             for key, values in vogn.items():
                 array2 = ledige_seter[nr][key]
                 if (all(isinstance(item, list) and len(item) == 2 for item in array2)):
@@ -278,43 +278,63 @@ def kjop_billetter(ledige_seter, datoNr):
         try:
             vogn = int(vogn)
         except:
-            print("Må være et tall!")
-    
-    
-    plasser = ledige_seter[ruteNr][vogn]
-
-    if (all(isinstance(item, list) and len(item) == 2 for item in plasser)):
-        erSeng = er_seng_paa_vogn(ledige_seter, ruteNr, vogn, plass)
-        while not erSeng and plass != "q":
-            plass = input("Velg seng (f.eks 1), q for å avslutte: ")
-            erSeng = er_seng_paa_vogn(ledige_seter, ruteNr, vogn, plass)
-        seng2 = ""
-        plass2 = ""
-        if (int(plass) % 2 == 0):
-            plass2 = int(plass)-1
-            seng2 = input(f"Du har valgt seng {plass}, vil du også ha seng {plass2} i samme kupe? (Svar ja eller nei): ")
-        else:
-            plass2 = int(plass)+1
-            seng2 = input(f"Du har valgt seng {plass}, vil du også ha seng {plass2} i samme kupe? (Svar ja eller nei): ")
-        
-        if (seng2.lower() == "ja" and er_seng_paa_vogn(ledige_seter, ruteNr, vogn, plass2)):
-            ekstraplass = plass2
-    else:
-        while plass not in plasser and plass != "q":
-            plass = input("Velg plass (f.eks 1), q for å avslutte: ")
-            try:
-                plass = int(plass)
-            except:
+            if (vogn != "q"):
                 print("Må være et tall!")
+    
+    if (vogn != "q"):
+        plasser = ledige_seter[ruteNr][vogn]
 
-    if(vogn != "q" and plass != "q" ):
-        tid = datetime.datetime.now().strftime('%H:%M')
-        ordreNr = finn_ordreNr()
-        cursor.execute(f'''INSERT INTO Kundeordre VALUES ({ordreNr}, "{dato}", "{tid}", {kundeNr})''')
-        cursor.execute(f'''INSERT INTO Billett VALUES ({ordreNr}, "{dato}", {rute}, {vogn}, {plass}, "{startstasjon}", "{endestasjon}", "{avgangsTid}", "{ankomstTid}")''')
-        if (ekstraplass != ""):
-            cursor.execute(f'''INSERT INTO Billett VALUES ({ordreNr}, "{dato}", {rute}, {vogn}, {ekstraplass}, "{startstasjon}", "{endestasjon}", "{avgangsTid}", "{ankomstTid}")''')
+        if (all(isinstance(item, list) and len(item) == 2 for item in plasser)):
+            erSeng = er_seng_paa_vogn(ledige_seter, ruteNr, vogn, plass)
+            while not erSeng and plass != "q":
+                plass = input("Velg seng (f.eks 1), q for å avslutte: ")
+                erSeng = er_seng_paa_vogn(ledige_seter, ruteNr, vogn, plass)
+            if (plass != "q"):
+                seng2 = ""
+                plass2 = ""
+                if (int(plass) % 2 == 0):
+                    plass2 = int(plass)-1
+                    seng2 = input(f"Du har valgt seng {plass}, vil du også ha seng {plass2} i samme kupe? (Svar ja eller nei): ")
+                else:
+                    plass2 = int(plass)+1
+                    seng2 = input(f"Du har valgt seng {plass}, vil du også ha seng {plass2} i samme kupe? (Svar ja eller nei): ")
+                
+                if (seng2.lower() == "ja" and er_seng_paa_vogn(ledige_seter, ruteNr, vogn, plass2)):
+                    ekstraplass = plass2
+        else:
+            while plass not in plasser and plass != "q":
+                plass = input("Velg plass (f.eks 1), q for å avslutte: ")
+                try:
+                    plass = int(plass)
+                except:
+                    if (plass != "q"):
+                        print("Må være et tall!")
 
+        if(vogn != "q" and plass != "q" ):
+            tid = datetime.datetime.now().strftime('%H:%M')
+            ordreNr = finn_ordreNr()
+            cursor.execute(f'''INSERT INTO Kundeordre VALUES ({ordreNr}, "{dato}", "{tid}", {kundeNr})''')
+            cursor.execute(f'''INSERT INTO Billett VALUES ({ordreNr}, "{dato}", {rute}, {vogn}, {plass}, "{startstasjon}", "{endestasjon}", "{avgangsTid}", "{ankomstTid}")''')
+            print(f'''
+                Du har bestilt følgende:  
+                Rute: {rute} 
+                Dato: {dato}
+                Fra: {startstasjon} Kl: {avgangsTid} 
+                Til: {endestasjon} Kl: {ankomstTid} 
+                Vogn: {vogn} 
+                Plass: {plass} 
+                -------------------- 
+            ''')
+            if (ekstraplass != ""):
+                cursor.execute(f'''INSERT INTO Billett VALUES ({ordreNr}, "{dato}", {rute}, {vogn}, {ekstraplass}, "{startstasjon}", "{endestasjon}", "{avgangsTid}", "{ankomstTid}")''')
+                print(f'''
+                Rute: {rute} 
+                Dato: {dato}
+                Fra: {startstasjon} Kl: {avgangsTid} 
+                Til: {endestasjon} Kl: {ankomstTid} 
+                Vogn: {vogn} 
+                Plass: {plass} 
+            ''')
 dato = ""
 while dato not in ["2023-04-03", "2023-04-04"] and dato != "q":
     dato = input("Velg dato (2023-04-03 eller 2023-04-04), q for å avslutte: ")
