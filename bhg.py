@@ -327,7 +327,8 @@ def kjop_billetter(ledige_seter, datoNr):
         if(vogn != "q" and plass != "q" ):
             tid = datetime.datetime.now().strftime('%H:%M')
             ordreNr = finn_ordreNr()
-            cursor.execute(f'''INSERT INTO Kundeordre VALUES ({ordreNr}, "{dato}", "{tid}", {kundeNr})''')
+            ordreDato = datetime.datetime.today().date()
+            cursor.execute(f'''INSERT INTO Kundeordre VALUES ({ordreNr}, "{ordreDato}", "{tid}", {kundeNr})''')
             cursor.execute(f'''INSERT INTO Billett VALUES ({ordreNr}, "{dato}", {rute}, {vogn}, {plass}, "{startstasjon}", "{endestasjon}", "{avgangsTid}", "{ankomstTid}")''')
             print(f'''
                 Du har bestilt følgende:  
